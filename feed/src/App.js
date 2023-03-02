@@ -5,7 +5,7 @@ import Post from './components/Post'
 const Cont = styled.div`
   width: 100vw;
   height: 100%;
-  background-color: #18122B;
+  background-color: #0d0a1a;
 `
 
 const Header = styled.nav`
@@ -36,6 +36,13 @@ const SubredditInfo = styled.input`
  border-radius: 5px;
 `
 
+const Feed = styled.div`
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+`
+
 
 
 
@@ -55,7 +62,7 @@ function App() {
       res.json().then(data => {
         if(data != null){
           setPosts(data.data.children)
-          console.log(data)
+          
         }
       })
     })
@@ -68,9 +75,11 @@ function App() {
         <Span>r/</Span>
         <SubredditInfo value={input} onChange={e => setInput(e.target.value)}/>
       </Header>
+      <Feed>
       {
           posts != null ? posts.map((post, index) => <Post key={index} post={post}/>) : ''
         }
+        </Feed>
     </Cont>
   );
 }
