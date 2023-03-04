@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { UilArrowUp } from '@iconscout/react-unicons'
+import { UilCalender } from '@iconscout/react-unicons'
 
 const ArticleCont = styled.div`
  border-radius: 5px;
@@ -9,11 +11,12 @@ const ArticleCont = styled.div`
  align-items: center;
  padding: 10px;
  margin-top: 2rem;
- box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-`
+ width: 640px;
+ height: 616px;
+ box-shadow: 10px 10px 30px;`
 const Title = styled.h3`
  color: white;
- font-size: 1rem;
+ font-size: 1.5rem;
 `
 const Link = styled.div`
  margin: 0.2rem 0 0 0.5rem;
@@ -22,6 +25,7 @@ const Link = styled.div`
 const Upvotes = styled.span`
  color: white;
  font-weight: 700;
+ margin-top: 0.5rem;
 
 `
 
@@ -29,6 +33,8 @@ const ArticleMeta = styled.div`
  display: flex;
  align-items: center;
  margin-top: 1rem;
+ flex-direction: column;
+ 
 `
 
 const ArticleInfo = styled.div`
@@ -36,12 +42,17 @@ const ArticleInfo = styled.div`
  flex-direction: column;
  justify-content: center;
  align-items: center;
- margin-top: 1rem;
+ margin-top: 2rem;
+ background: #271f3d;
+ width: 100%;
+ height: 100%;
+ border-radius: 10px;
+ 
 `
 const IMG = styled.img`
  margin-right: 0rem;
- height: 250px;
- width: 250px;
+ max-height: 400px;
+ max-width: 400px;
  margin-top: 1rem;
 `
 
@@ -49,33 +60,30 @@ const GMTDate = styled.span`
  color: white;
  font-weight: 700;
 `
-const URL = styled.span`
- color: white;
- margin-right: 3rem;
- font-weight: 700;
-`
 
 function Post(props) {
+  let postData = props.post.data
+   let [epoch, setEpoch] = useState(postData.created * 1000)
    
-   let [epoch, setEpoch] = useState(props.post.data.created * 1000)
-
    let date = new Date(epoch);
   let gmt5Time = date.toLocaleString()
   
+
 
     return (
 
     <ArticleCont>
      <ArticleMeta>
-      <Title>{props.post.data.title} || </Title>
+      <Title>{postData.title} </Title>
      <Link>
-      <a href={'https://www.reddit.com' + props.post.data.permalink} target="_blank">Link to the post!</a>
+      <a href={'https://www.reddit.com' + postData.permalink} target="_blank">Link to the post!</a>
       </Link>
+      <Upvotes><UilArrowUp style={{position: 'relative', top: '5px'}}/> {postData.ups}</Upvotes>
+      <GMTDate><UilCalender style={{position: 'relative', top: '5px'}}/> {gmt5Time}</GMTDate>
       </ArticleMeta> 
       <ArticleInfo>
-      <Upvotes>Upvotes : {props.post.data.ups}</Upvotes>
-      <GMTDate>Date : {gmt5Time}</GMTDate>
-      <IMG src={props.post.data.url}/>
+      
+      {postData.preview ? postData.preview.images ? <IMG src={postData.url}/> : '' : ''}
       </ArticleInfo>
     </ArticleCont>
   )

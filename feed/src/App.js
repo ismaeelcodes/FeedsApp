@@ -49,7 +49,7 @@ const Feed = styled.div`
 
 function App() {
   const [posts, setPosts] = useState([])
-  const [input, setInput] = useState('reactjs')
+  const [input, setInput] = useState('memes')
   
 
   useEffect(function(){
@@ -62,7 +62,7 @@ function App() {
       res.json().then(data => {
         if(data != null){
           setPosts(data.data.children)
-          
+          console.log(data.data.children)
         }
       })
     })
