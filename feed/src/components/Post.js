@@ -26,7 +26,9 @@ const Upvotes = styled.span`
  color: white;
  font-weight: 700;
  margin-top: 0.5rem;
-
+ position: relative;
+ top: 25px;
+ left: 250px;
 `
 
 const ArticleMeta = styled.div`
@@ -47,18 +49,20 @@ const ArticleInfo = styled.div`
  width: 100%;
  height: 100%;
  border-radius: 10px;
- 
+ overflow: hidden;
 `
 const IMG = styled.img`
  margin-right: 0rem;
- max-height: 400px;
+ height: 100%;
  max-width: 400px;
- margin-top: 1rem;
+ 
 `
 
 const GMTDate = styled.span`
  color: white;
  font-weight: 700;
+ position: relative;
+ right: 200px;
 `
 
 function Post(props) {
@@ -67,8 +71,8 @@ function Post(props) {
    
    let date = new Date(epoch);
   let gmt5Time = date.toLocaleString()
+ 
   
-
 
     return (
 
@@ -83,7 +87,10 @@ function Post(props) {
       </ArticleMeta> 
       <ArticleInfo>
       
-      {postData.preview ? postData.preview.images ? <IMG src={postData.url}/> : '' : ''}
+      {postData.preview ? postData.preview.images ? postData.is_video ? <video>
+        <source src={postData.secure_media.reddit_video.scrubber_media_url} type="video/mp4" />
+        Video
+      </video> : <IMG src={postData.url}/> : '' : ''}
       </ArticleInfo>
     </ArticleCont>
   )
