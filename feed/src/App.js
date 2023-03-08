@@ -64,7 +64,7 @@ function App() {
       res.json().then(data => {
         if(data != null){
           setPosts(data.data.children)
-          
+          console.log(data.data.children)
         }
       })
     })

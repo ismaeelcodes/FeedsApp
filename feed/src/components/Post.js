@@ -65,6 +65,15 @@ const GMTDate = styled.span`
  right: 200px;
 `
 
+const Span = styled.span`
+ fontSize: 1rem; 
+ color: white;
+ textWrap: wrap;
+ width: 500px;
+ height: 100%;
+ margin-top: 1rem;
+`
+
 function Post(props) {
   let postData = props.post.data
    let [epoch, setEpoch] = useState(postData.created * 1000)
@@ -87,11 +96,17 @@ function Post(props) {
       </ArticleMeta> 
       <ArticleInfo>
       
-      {postData.preview ? postData.preview.images ? postData.is_video ?    <video controls width="400px" height="100%">
+      {postData.preview ? postData.preview.images ? postData.is_video ? <video controls width="400px" height="100%">
         <source src={postData.media.reddit_video.fallback_url} type="video/mp4" />
         Video
       </video> : 
-      <IMG src={postData.url}/> : '' : ''}
+      <IMG src={postData.url}/> : 
+      '' :
+       postData.selftext ? 
+       <Span >{postData.selftext.length < 1000 ? postData.selftext : postData.selftext.substring(0, 1000) + '...' }</Span> 
+       : 
+       <span style={{color: 'white', fontWeight: '700'}}>No Description</span>}
+      
       </ArticleInfo>
     </ArticleCont>
   )
