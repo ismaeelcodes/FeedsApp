@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Post from './components/Post'
+import ScrollToTop from "react-scroll-to-top";
+
 
 const Cont = styled.div`
   width: 100vw;
@@ -80,6 +82,7 @@ function App() {
           posts != null ? posts.map((post, index) => <Post key={index} post={post}/>) : ''
         }
         </Feed>
+        <ScrollToTop smooth/>
     </Cont>
   );
 }

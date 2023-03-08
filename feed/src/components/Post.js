@@ -87,10 +87,11 @@ function Post(props) {
       </ArticleMeta> 
       <ArticleInfo>
       
-      {postData.preview ? postData.preview.images ? postData.is_video ? <video>
-        <source src={postData.secure_media.reddit_video.scrubber_media_url} type="video/mp4" />
+      {postData.preview ? postData.preview.images ? postData.is_video ?    <video controls width="400px" height="100%">
+        <source src={postData.media.reddit_video.fallback_url} type="video/mp4" />
         Video
-      </video> : <IMG src={postData.url}/> : '' : ''}
+      </video> : 
+      <IMG src={postData.url}/> : '' : ''}
       </ArticleInfo>
     </ArticleCont>
   )
