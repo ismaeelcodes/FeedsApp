@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { UilArrowUp } from '@iconscout/react-unicons'
 import { UilCalender } from '@iconscout/react-unicons'
+import Thumbnail from '../Untitled.png'
 
 const ArticleCont = styled.div`
  border-radius: 5px;
@@ -53,9 +54,20 @@ const ArticleInfo = styled.div`
 `
 const IMG = styled.img`
  margin-right: 0rem;
- height: 100%;
- max-width: 400px;
+ height: 432px;
+ width: 432px;
  
+`
+
+const ThumbnailIMG = styled.img`
+ margin-right: 0rem;
+ height: 432px;
+ width: 432px;
+ 
+ &:hover{
+  
+  box-shadow: 0px 0px 10px white;
+ }
 `
 
 const GMTDate = styled.span`
@@ -77,7 +89,7 @@ const Span = styled.span`
 function Post(props) {
   let postData = props.post.data
    let [epoch, setEpoch] = useState(postData.created * 1000)
-   
+   let [showVideo, setShowVideo] = useState(false)
    let date = new Date(epoch);
   let gmt5Time = date.toLocaleString()
  
@@ -96,16 +108,34 @@ function Post(props) {
       </ArticleMeta> 
       <ArticleInfo>
       
-      {postData.preview ? postData.preview.images ? postData.is_video ? <video controls width="400px" height="100%">
-        <source src={postData.media.reddit_video.fallback_url} type="video/mp4" />
-        Video
-      </video> : 
-      <IMG src={postData.url}/> : 
-      '' :
-       postData.selftext ? 
-       <Span >{postData.selftext.length < 1000 ? postData.selftext : postData.selftext.substring(0, 1000) + '...' }</Span> 
-       : 
-       <span style={{color: 'white', fontWeight: '700'}}>No Description</span>}
+      
+{postData.preview && postData.preview.images && postData.is_video ? (
+  showVideo ? (
+    <video controls width="432px" height="432px">
+      <source src={postData.media.reddit_video.fallback_url} type="video/mp4" />
+      Video
+    </video>
+  ) : (
+    <ThumbnailIMG
+      src={Thumbnail}
+      alt="Video Thumbnail"
+      onClick={() => setShowVideo(true)}
+      style={{ cursor: 'pointer' }}
+    />
+  )
+) : postData.url ? (
+  <IMG src={postData.url} alt="Embed Image" />
+) : (
+  postData.selftext ? (
+    <Span>
+      {postData.selftext.length < 1000
+        ? postData.selftext
+        : postData.selftext.substring(0, 1000) + '...'}
+    </Span>
+  ) : (
+    <span style={{ color: 'white', fontWeight: '700' }}>No Description</span>
+  ))}
+
       
       </ArticleInfo>
     </ArticleCont>
