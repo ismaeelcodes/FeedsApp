@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import Post from './components/Post'
+import Post from './components/Post';
 import ScrollToTop from "react-scroll-to-top";
 
 
@@ -45,6 +45,12 @@ const Feed = styled.div`
  align-items: center;
 `
 
+const Loadbutton = styled.button`
+ margin-top: 2rem;
+ padding: 10px 200px;
+ margin-bottom: 2rem;
+`
+
 
 
 
@@ -52,10 +58,10 @@ const Feed = styled.div`
 function App() {
   const [posts, setPosts] = useState([])
   const [input, setInput] = useState('memes')
-  
+  const [postCount, setPostCount] = useState(20)
 
   useEffect(function(){
-    fetch("https://www.reddit.com/r/"+ input +".json?limit=100").then(res => {
+    fetch(`https://www.reddit.com/r/`+ input +`.json?limit=${postCount}`).then(res => {
       if (res.status !== 200){
         
         return
@@ -68,8 +74,11 @@ function App() {
         }
       })
     })
-  }, [input])
+  }, [input, postCount])
 
+  function increaseCount(){
+    setPostCount(prevCount => prevCount + 20)
+  }
 
   return (
     <Cont>
@@ -81,7 +90,9 @@ function App() {
       {
           posts != null ? posts.map((post, index) => <Post key={index} post={post}/>) : ''
         }
+        <Loadbutton onClick={() => increaseCount()}>Load More</Loadbutton>
         </Feed>
+        
         <ScrollToTop smooth/>
     </Cont>
   );
