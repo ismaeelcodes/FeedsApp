@@ -173,7 +173,7 @@ function Post(props) {
       />
       </>
     );
-  } else if (postData.url) {
+  } else if (postData.url && postData.preview) {
     mediaContent = <IMG src={postData.url} alt={postData.title} />;
   } else if (postData.selftext) {
     mediaContent = (
