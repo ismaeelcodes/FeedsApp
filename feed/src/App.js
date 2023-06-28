@@ -61,7 +61,7 @@ function App() {
   const [postCount, setPostCount] = useState(20)
 
   useEffect(function(){
-    fetch(`https://feeds-app.vercel.app/api/redditProxy?subreddit=${input}&limit=${postCount}`).then(res => {
+    fetch(`https://www.reddit.com/r/`+ input +`.json?limit=${postCount}`).then(res => {
       if (res.status !== 200){
         
         return
