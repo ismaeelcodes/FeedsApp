@@ -10,6 +10,12 @@ const Cont = styled.div`
   background-color: #0d0a1a;
 `
 
+const mySortTop = styled.button`
+ margin-top: 2rem;
+ padding: 10px 200px;
+ margin-bottom: 2rem;
+`
+
 const Header = styled.nav`
  background-color: #443C68;
  height: 5rem;
@@ -45,6 +51,7 @@ const Feed = styled.div`
  align-items: center;
 `
 
+
 const Loadbutton = styled.button`
  margin-top: 2rem;
  padding: 10px 200px;
@@ -54,14 +61,14 @@ const Loadbutton = styled.button`
 
 
 
-
 function App() {
   const [posts, setPosts] = useState([])
   const [input, setInput] = useState('memes')
   const [postCount, setPostCount] = useState(20)
+  const [top, setTop] = useState(false)
 
   useEffect(function(){
-    fetch(`https://www.reddit.com/r/`+ input +`.json?limit=${postCount}`).then(res => {
+    fetch(`https://www.reddit.com/r/`+ input +`${top ? '/top' : ''}.json?${top ? 't=week&' : ''}limit=${postCount}`).then(res => {
       if (res.status !== 200){
         
         return
@@ -70,14 +77,23 @@ function App() {
       res.json().then(data => {
         if(data != null){
           setPosts(data.data.children)
-          console.log(data.data.children)
+          console.log(top)
         }
       })
     })
-  }, [input, postCount])
+  }, [input, postCount, top])
 
   function increaseCount(){
     setPostCount(prevCount => prevCount + 20)
+  }
+
+  function decreaseCount(){
+    setPostCount(prevCount => prevCount > 20 ? prevCount - 20 : prevCount)
+  }
+
+  function toggleTop(){
+    setTop(prev => !prev)
+ 
   }
 
   return (
@@ -87,6 +103,10 @@ function App() {
         <SubredditInfo value={input} onChange={e => setInput(e.target.value)}/>
       </Header>
       <Feed>
+      <button onClick={event => {
+        toggleTop()
+        decreaseCount()
+        }}>{top ? 'Sort by hot' : 'Sort by Weekly Top'}</button>
       {
           posts != null ? posts.map((post, index) => <Post key={index} post={post}/>) : ''
         }
