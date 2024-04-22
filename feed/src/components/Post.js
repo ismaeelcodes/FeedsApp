@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import LazyLoad from 'react-lazyload';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import { UilCalender } from '@iconscout/react-unicons';
 import Thumbnail from '../VidThumbnail.png';
@@ -118,6 +119,9 @@ function Post(props) {
   const [showVideo, setShowVideo] = useState(false);
   const date = new Date(epoch);
   const gmt5Time = date.toLocaleString();
+  const handleLoad = (image) => {
+    console.log("Image loaded:", image.target.currentSrc);
+  };
 
   const handleThumbnailClick = () => {
     setShowVideo(previousValue => !previousValue);
@@ -174,7 +178,7 @@ function Post(props) {
       </>
     );
   } else if (postData.url && postData.preview) {
-    mediaContent = <IMG src={postData.url} alt={postData.title} />;
+    mediaContent = <LazyLoad onContentLoad={handleLoad}> <IMG src={postData.url} alt={postData.title} />  </LazyLoad>
   } else if (postData.selftext) {
     mediaContent = (
       <Span>
