@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import LazyLoad from 'react-lazyload';
 import { UilArrowUp } from '@iconscout/react-unicons';
 import { UilCalender } from '@iconscout/react-unicons';
 import Thumbnail from '../VidThumbnail.png';
@@ -178,7 +177,7 @@ function Post(props) {
       </>
     );
   } else if (postData.url && postData.preview) {
-    mediaContent = <LazyLoad onContentLoad={handleLoad}> <IMG src={postData.url} alt={postData.title} />  </LazyLoad>
+    mediaContent = <IMG src={postData.url} alt={postData.title} />
   } else if (postData.selftext) {
     mediaContent = (
       <Span>
