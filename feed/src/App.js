@@ -67,21 +67,35 @@ function App() {
   const [postCount, setPostCount] = useState(20)
   const [top, setTop] = useState(false)
 
-  useEffect(function(){
-    fetch(`https://www.reddit.com/r/`+ input +`${top ? '/top' : ''}.json?${top ? 't=week&' : ''}limit=${postCount}`).then(res => {
-      if (res.status !== 200){
-        
-        return
-      }
-
-      res.json().then(data => {
-        if(data != null){
-          setPosts(data.data.children)
-          console.log(top)
+  useEffect(() => {
+    // Declare a timer variable to hold the timeout ID
+    let timer;
+  
+    // Function to fetch posts
+    const fetchPosts = async () => {
+      const url = `http://pnode3.danbot.host:2520/api/posts/${input}/${postCount}${top ? '/top' : ''}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch posts: ${response.statusText}`);
         }
-      })
-    })
-  }, [input, postCount, top])
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        // Handle error state or retry logic if needed
+      }
+    };
+  
+    // Start a timer to delay fetching posts after input changes
+    timer = setTimeout(() => {
+      fetchPosts();
+    }, 1500); // 3000 milliseconds = 3 seconds
+  
+    // Cleanup function to clear the timer if input changes before the timeout completes
+    return () => clearTimeout(timer);
+  
+  }, [input, postCount, top]); // Depend on input, postCount, and top
 
   function increaseCount(){
     setPostCount(prevCount => prevCount + 20)
